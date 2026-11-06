@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP
 
 # Initialize FastMCP server
 mcp = FastMCP("HDRS Projects Tracker")
