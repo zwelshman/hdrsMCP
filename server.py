@@ -200,7 +200,7 @@ async def get_service_pitch_contacts(project_name: str) -> str:
 # --- Uvicorn ASGI Entry Point ---
 # Exposing the Starlette app allows this to be run as an SSE server via Uvicorn,
 # which is ideal for remote deployments and handling long-running timeout parameters.
-app = mcp.create_app()
+app = mcp.sse_app()
 
 if __name__ == "__main__":
     # Local CLI fallback execution
