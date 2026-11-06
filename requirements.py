@@ -1,0 +1,4 @@
+fastmcp
+pandas
+tabulate
+uvicorn
