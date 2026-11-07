@@ -5,7 +5,7 @@
 [![Issues](https://img.shields.io/github/issues/zwelshman/hdrsMCP?style=flat-square&logo=issues&color=critical)](https://github.com/zwelshman/hdrsMCP/issues)
 [![Repo Size](https://img.shields.io/github/repo-size/zwelshman/hdrsMCP?style=flat-square&logo=codeforces&color=success)](https://github.com/zwelshman/hdrsMCP)
 
-A lightweight, FastMCP server that currently sintegrates the Health Data Research (HDRS) projects database directly into your AI assistant (such as Cursor, VS Code, or Claude Desktop). It allows LLMs to query, filter, and match health data projects, institutions, and infrastructure requirements using natural language.
+A lightweight, FastMCP server that currently integrates the Health Data Research (HDRS) projects tracker, compiled from an Agentic Flow in Langflow, directly into your AI assistant (such as Cursor, VS Code, or Claude Desktop). It allows LLMs to query, filter, and match health data projects, institutions, and infrastructure requirements using natural language.
 
 ## 🛠️ Tech Stack
 
