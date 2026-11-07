@@ -1,5 +1,10 @@
 # hdrsMCP (HDRS Projects Tracker)
 
+[![Stars](https://img.shields.io/github/stars/zwelshman/hdrsMCP?style=flat-square&logo=github&color=blue)](https://github.com/zwelshman/hdrsMCP/stargazers)
+[![Forks](https://img.shields.io/github/forks/zwelshman/hdrsMCP?style=flat-square&logo=git&color=orange)](https://github.com/zwelshman/hdrsMCP/network/members)
+[![Issues](https://img.shields.io/github/issues/zwelshman/hdrsMCP?style=flat-square&logo=issues&color=critical)](https://github.com/zwelshman/hdrsMCP/issues)
+[![Repo Size](https://img.shields.io/github/repo-size/zwelshman/hdrsMCP?style=flat-square&logo=codeforces&color=success)](https://github.com/zwelshman/hdrsMCP)
+
 A lightweight, FastMCP server that currently sintegrates the Health Data Research (HDRS) projects database directly into your AI assistant (such as Cursor, VS Code, or Claude Desktop). It allows LLMs to query, filter, and match health data projects, institutions, and infrastructure requirements using natural language.
 
 ## 🛠️ Tech Stack
@@ -39,7 +44,7 @@ If you deploy the Uvicorn ASGI app (`app = mcp.sse_app()`) to a hosting platform
   "mcpServers": {
     "hdrs-projects-tracker": {
       "type": "http",
-      "url": "https://your-hosted-url.com/sse"
+      "url": "https://hdrsmcp.onrender.com.mcp/sse"
     }
   }
 }
