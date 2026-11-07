@@ -23,7 +23,7 @@ A lightweight, FastMCP server that currently integrates the Health Data Research
 
 Your AI assistant will automatically discover and utilize the following targeted data tools:
 
-* `get_dataset_summary()` – Retrieve a high-level summary of total tracked projects and unique hosting institutions/networks.
+* `get_hdrs_project_tracker_ataset_summary()` – Retrieve a high-level summary of total tracked projects and unique hosting institutions/networks.
 * `search_projects(keyword)` – Perform a vectorized keyword search across all textual fields for quick project discovery.
 * `get_projects_by_institution(institution_name)` – Filter the database by specific hosting networks (e.g., 'Wessex SDE').
 * `get_project_details(project_name)` – Fetch comprehensive, markdown-formatted metadata for a specific project.
