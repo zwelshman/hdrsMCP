@@ -34,7 +34,7 @@ def _load_data() -> pd.DataFrame:
 
 # 4. Register MCP Tools
 @mcp.tool()
-async def get_hdrs_tracker_dataset_summary() -> str:
+async def get_hdrs_project_tracker_dataset_summary() -> str:
     """
     Get a high-level summary of the HDRS projects dataset.
     Returns total count and a list of unique hosting institutions.
