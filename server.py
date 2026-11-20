@@ -1,25 +1,37 @@
 import os
 import sys
-import uvicorn
 import pandas as pd
 import ast
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
+from typing import Any
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
+from starlette.requests import Request
+from starlette.responses import JSONResponse, Response
 
 # 1. Force line buffering so execution logs print instantly in cloud control panels
 sys.stdout.reconfigure(line_buffering=True)
 sys.stderr.reconfigure(line_buffering=True)
 
-# 2. Initialize FastMCP with transport security configured for cloud hosting
+# 2. Initialize FastMCP with transport security configured for cloud hosting (Render)
 mcp = FastMCP(
     "HDRS Projects Tracker",
+    instructions="Provides vector-like search and metadata retrieval for HDRS projects. Use search_projects for keyword search, get_project_details for full metadata, match_service_to_projects for service alignment scoring, find_infrastructure_fit for tech+domain matching, get_service_pitch_contacts for collaboration routing, and get_hdrs_project_tracker_dataset_summary for dataset overview.",
     transport_security=TransportSecuritySettings(
-        enable_dns_rebinding_protection=False,
-        allowed_hosts=["*"]
-    )
+        enable_dns_rebinding_protection=(
+            os.environ.get("MCP_ENABLE_DNS_REBINDING_PROTECTION", "true").lower()
+            not in ("false", "0", "no", "off")
+        ),
+        allowed_hosts=[
+            h.strip()
+            for h in os.environ.get("MCP_ALLOWED_HOSTS", "localhost:*,127.0.0.1:*").split(",")
+            if h.strip()
+        ],
+        allowed_origins=[
+            o.strip()
+            for o in os.environ.get("MCP_ALLOWED_ORIGINS", "").split(",")
+            if o.strip()
+        ],
+    ),
 )
 
 # 3. Data Loading Logic
@@ -202,35 +214,19 @@ async def get_service_pitch_contacts(project_name: str) -> str:
     return "\n".join(response)
 
 
-# 5. Create standard FastAPI application
-app = FastAPI(
-    title="HDRS Projects Tracker MCP Server",
-    description="Model Context Protocol (MCP) server providing vector-like search and metadata retrieval for HDRS projects."
-)
+# 5. Health check endpoint for hosting platforms (Render)
+@mcp.custom_route("/health", methods=["GET"])
+async def health_check(request: Request) -> Response:
+    """Health check endpoint for hosting platforms (Render)."""
+    return JSONResponse({"status": "healthy", "mcp_endpoint": "/mcp"})
 
-# 6. Attach production middleware
-app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
-# 7. Platform health check endpoint
-@app.get("/")
-async def health_check():
-    return {
-        "status": "healthy",
-        "service": "HDRS-Projects-Tracker-MCP",
-        "sse_endpoint": "/mcp/sse"
-    }
+def main() -> None:
+    """Serve the streamable-HTTP MCP transport at /mcp, binding env HOST/PORT."""
+    mcp.settings.host = os.environ.get("HOST", "0.0.0.0")
+    mcp.settings.port = int(os.environ.get("PORT", "8000"))
+    mcp.run(transport="streamable-http")
 
-# 8. Mount the FastMCP SSE application under /mcp namespace
-app.mount("/mcp", mcp.sse_app())
 
 if __name__ == "__main__":
-    # Fallback for local execution if not running via 'uvicorn server:app'
-    port = int(os.environ.get("PORT", 10000))
-    uvicorn.run("server:app", host="0.0.0.0", port=port, timeout_keep_alive=75)
+    main()
