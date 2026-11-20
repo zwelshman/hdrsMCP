@@ -23,7 +23,7 @@ mcp = FastMCP(
         ),
         allowed_hosts=[
             h.strip()
-            for h in os.environ.get("MCP_ALLOWED_HOSTS", "localhost:*,127.0.0.1:*").split(",")
+            for h in os.environ.get("MCP_ALLOWED_HOSTS", "localhost:*,127.0.0.1:*,hdrsmcp.onrender.com").split(",")
             if h.strip()
         ],
         allowed_origins=[
